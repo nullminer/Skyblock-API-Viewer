@@ -1,9 +1,3 @@
 {
-    "apikey": "",
-    "database": {
-        "server": "",
-        "username": "",
-        "password": "",
-        "database": ""
-    }
+    "apikey": ""
 }

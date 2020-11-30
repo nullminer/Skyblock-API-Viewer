@@ -15,3 +15,4 @@ NOTE: If this doesn't work, please open an issue in the github repository
 ## TODO List
 
 1. Finish the rewrite
+2. Add in some features

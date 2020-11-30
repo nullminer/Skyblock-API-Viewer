@@ -1,6 +1,6 @@
 <?php
-require 'nbt.class.php';
-$config = json_decode(file_get_contents("config.json"));
+require 'resources/packages/nbt.class.php';
+$config = json_decode(file_get_contents("config.json"), 1);
 function exists($var, $type = 0) {
     if (isset($var) && $var != null) {
         print($var);
@@ -19,13 +19,50 @@ function exists($var, $type = 0) {
         <title>
             <?php
             if (isset($_GET['player']) && $_GET['player'] != null) {
-                print("$player\'s Stats");
+                print($_GET['player'] . "'s Stats");
             } else {
                 print("Skyblock API Viewer");
             }
             ?>
         </title>
         <style>
+            .accordion {
+                background-color: #eee;
+                color: #444;
+                cursor: pointer;
+                padding: 18px;
+                width: 100%;
+                border: none;
+                text-align: left;
+                outline: none;
+                font-size: 15px;
+                transition: 0.4s;
+            }
+
+            .active, .accordion:hover {
+                background-color: #ccc;
+            }
+
+            .panel {
+                padding: 0 18px;
+                background-color: white;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.2s ease-out;
+            }
+            
+            .accordion:after {
+                content: '\02795';
+                font-size: 13px;
+                color: #777;
+                float: right;
+                margin-left: 5px;
+            }
+
+            .active:after {
+                content: "\2796";
+            }
+            
             html, body {
                 background-image: url("resources/images/background.png");
                 height: 100%;
@@ -40,10 +77,11 @@ function exists($var, $type = 0) {
     <body>
         <!-- Header (Coming Soon) -->
         <?php
-            $mojangapi = file_get_contents("https://api.mojang.com/users/profiles/minecraft/$player");
+        if (isset($_GET['player']) && $_GET['player'] != null) {
+            $mojangapi = file_get_contents("https://api.mojang.com/users/profiles/minecraft/" . $_GET['player']);
             if ($mojangapi != null) {
                 $uuid = json_decode($mojangapi, true)['id'];
-                $profileapi = file_get_contents("https://api.hypixel.net/skyblock/profiles?key=" . $config['database']['apikey'] . "&uuid=$uuid");
+                $profileapi = file_get_contents("https://api.hypixel.net/skyblock/profiles?key=" . $config['apikey'] . "&uuid=$uuid");
                 $profiles = json_decode($profileapi, true)['profiles'];
                 if ($profiles != null) {
                     if (!file_exists("history/$uuid")) {
@@ -123,7 +161,8 @@ function exists($var, $type = 0) {
                                         </tr>
                                     </tbody>
                                 </table>
-                            <b>>Armour Data</b>
+                            <b>Armour Data</b>
+                                <p>Coming Soon!</p>
                                 <?php
                                 // Create NBT file and load it
                                 ?>
@@ -159,15 +198,15 @@ function exists($var, $type = 0) {
                 }
             } else {
                 ?>
-                    <audio autoplay="true" style="display:none;">
-                        <source src="resources/music/error.mp3" type="audio/mp3">
-                    </audio>
-                    <h2>The player doesn't exist!</h2>
-                    <?php
+                <audio autoplay="true" style="display:none;">
+                    <source src="resources/music/error.mp3" type="audio/mp3">
+                </audio>
+                <h2>The player doesn't exist!</h2>
+                <?php
             }
         } else {
             ?>
-            <div class="formdiv">
+            <div style="text-align:center; padding-top:10%;">
 			    <form action="index.php" method="get">
 			        <p>&nbsp;</p>
 			        <input class="input is-large has-text-centered" style="width:30%;" type="text" id="player" name="player" placeholder="Enter Player IGN" autofocus>
