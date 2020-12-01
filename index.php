@@ -91,23 +91,41 @@ function exists($var, $type = 0) {
                         mkdir("history/$uuid");
                     }
                     file_put_contents("history/$uuid/" . time() . ".txt", $profileapi);
+                    ?>
+                    <div style="width:25%; float:left; text-align:center; padding-top:12.5%;">
+                        <img src="https://crafatar.com/renders/body/<?php print($uuid) ?>?scale=10" alt="<?php print($_GET['player']) ?>'s skin" />
+                    </div>
+                    <div style="width:75%; float:left;">
+                    <?php
                     foreach ($profiles as $profile) {
                         $playerdata = $profile['members'][$uuid];
 			            ?>
 			            <button class="accordion"><?php print($profile['cute_name']) ?></button>
                         <div class="panel">
                             <b>Quick Stats</b>
-                                <p>Last Save: <?php exists($playerdata['last_save']) ?></p>
-                                <p>Fairy Souls: <?php exists($playerdata['fairy_souls_collected']) ?></p>
                                 <?php
+                                if (isset($playerdata['last_save'])) {
+                                    ?><p>Last Save: <?php print(date('Y/m/d H:i:s', $playerdata['last_save']/1000)) ?></p><?php
+                                } else {
+                                    ?><p>Last Save: None <u><i>But how is this even possible?</i></u></p><?php
+                                }
                                 if (isset($playerdata['coin_purse'])) {
                                     ?><p>Purse: <?php print(round($playerdata['coin_purse'], 1)) ?></p><?php
                                 } else {
                                     ?><p>Purse: None</p><?php
                                 }
+                                if (isset($playerdata['first_join'])) {
+                                    ?><p>First Join: <?php print(date('Y/m/d H:i:s', $playerdata['first_join']/1000)) ?></p><?php
+                                } else {
+                                    ?><p>First Join: None <u><i>But how is this even possible?</i></u></p><?php
+                                }
+                                if (isset($playerdata['stats']['highest_critical_damage'])) {
+                                    ?><p>Highest Crit: <?php print(round($playerdata['stats']['highest_critical_damage'])) ?></p><?php
+                                } else {
+                                    ?><p>Highest Crit: None</p><?php
+                                }
                                 ?>
-                                <p>Joined: <?php exists($playerdata['first_join']) ?></p>
-                                <p>Highest Crit: <?php exists($playerdata['stats']['highest_critical_damage']) ?></p>
+                                <p>Fairy Souls: <?php exists($playerdata['fairy_souls_collected']) ?></p>
                             <b>Auction Stats</b>
                                 <p>Total Bids: <?php exists($playerdata['stats']['auctions_bids']) ?></p>
                                 <p>Auction Wins: <?php exists($playerdata['stats']['auctions_won']) ?></p>
@@ -174,6 +192,7 @@ function exists($var, $type = 0) {
 			            <?php
                     }
                     ?>
+                    </div>
                     <script>
                         var acc = document.getElementsByClassName("accordion");
                         var i;
@@ -209,8 +228,9 @@ function exists($var, $type = 0) {
             }
         } else {
             ?>
-            <div style="text-align:center; padding-top:10%;">
+            <div style="text-align:center; padding-top:12.5%;">
 			    <form action="index.php" method="get">
+                    <!-- Logo Image -->
 			        <p>&nbsp;</p>
 			        <input class="input is-large has-text-centered" style="width:30%;" type="text" id="player" name="player" placeholder="Enter Player IGN" autofocus>
 			        <p>&nbsp;</p>
