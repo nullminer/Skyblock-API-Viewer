@@ -16,20 +16,18 @@ function exists($var, $type = 0) {
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            <?php
-            if (isset($_GET['player']) && $_GET['player'] != null) {
-                ?>
-                <title><?php print($_GET['player']) ?>'s Stats<title>
-                <link rel="icon" type="image/png" href="http://cravatar.eu/avatar/<?php print($_GET['player']) ?>.png">
-                <?php
-            } else {
-                ?>
-                <title>Skyblock API Viewer</title>
-                <?php
-            }
+        <?php
+        if (isset($_GET['player']) && $_GET['player'] != null) {
             ?>
-        </title>
+            <title><?php print($_GET['player']) ?>'s Stats</title>
+            <link rel="icon" type="image/png" href="http://cravatar.eu/avatar/<?php print($_GET['player']) ?>.png">
+            <?php
+        } else {
+            ?>
+            <title>Skyblock API Viewer</title>
+            <?php
+        }
+        ?>
         <style>
             .accordion {
                 background-color: #eee;
