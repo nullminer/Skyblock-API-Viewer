@@ -19,9 +19,14 @@ function exists($var, $type = 0) {
         <title>
             <?php
             if (isset($_GET['player']) && $_GET['player'] != null) {
-                print($_GET['player'] . "'s Stats");
+                ?>
+                <title><?php print($_GET['player']) ?>'s Stats<title>
+                <link rel="icon" type="image/png" href="http://cravatar.eu/avatar/<?php print($_GET['player']) ?>.png">
+                <?php
             } else {
-                print("Skyblock API Viewer");
+                ?>
+                <title>Skyblock API Viewer</title>
+                <?php
             }
             ?>
         </title>

@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Skyhistory</title>
+        <title>
+            <?php
+            if (isset($_GET['uuid']) && $_GET['uuid'] != null) {
+                ?>
+                <title><?php print($_GET['player']) ?><title>
+                <link rel="icon" type="image/png" href="http://cravatar.eu/avatar/<?php print($_GET['uuid']) ?>.png">
+                <?php
+            } else {
+                ?>
+                <title>Skyhistory</title>
+                <?php
+            }
+            ?>
+        </title>
     </head>
     <body>
     <?php
