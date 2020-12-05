@@ -78,7 +78,15 @@ function exists($var, $type = 0) {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     </head>
     <body>
-        <!-- Header (Coming Soon) -->
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="index.php">
+                    <img src="resources/images/logo.png" width="112" height="28">
+                </a>
+                <a class="navbar-item" href="index.php">Forum Thread</a>
+                <a class="navbar-item" href="index.php">Github</a>
+            </div>
+        </nav>
         <?php
         if (isset($_GET['player']) && $_GET['player'] != null) {
             $mojangapi = file_get_contents("https://api.mojang.com/users/profiles/minecraft/" . $_GET['player']);
@@ -230,7 +238,7 @@ function exists($var, $type = 0) {
             ?>
             <div style="text-align:center; padding-top:12.5%;">
 			    <form action="index.php" method="get">
-                    <!-- Logo Image -->
+                    <img src="resources/images/logo.png">
 			        <p>&nbsp;</p>
 			        <input class="input is-large has-text-centered" style="width:30%;" type="text" id="player" name="player" placeholder="Enter Player IGN" autofocus>
 			        <p>&nbsp;</p>
@@ -240,6 +248,10 @@ function exists($var, $type = 0) {
             <?php
         }
         ?>
-        <!-- Footer (Coming Soon) -->
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>Nullminer is the best. Oh, by the way, you should <a href="https://www.youtube.com/channel/UCpwHu2wzwAWLGtKUu5fmkJA">check out my youtube channel</a>! Lets try to get to 1000 subs!</p>
+            </div>
+        </footer>
     </body>
 </html>
