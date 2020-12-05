@@ -83,8 +83,9 @@ function exists($var, $type = 0) {
                 <a class="navbar-item" href="index.php">
                     <img src="resources/images/logo.png" width="112" height="28">
                 </a>
-                <a class="navbar-item" href="index.php">Forum Thread</a>
-                <a class="navbar-item" href="index.php">Github</a>
+                <a class="navbar-item" href="https://hypixel.net/threads/skyblock-api-viewer-version-0-6.3602932/" target="_blank">Forum Thread</a>
+                <a class="navbar-item" href="https://github.com/nullminer/Skyblock-API-Viewer" target="_blank">Github</a>
+                <a class="navbar-item" href="https://www.youtube.com/channel/UCpwHu2wzwAWLGtKUu5fmkJA" target="_blank">My Youtube</a>
             </div>
         </nav>
         <?php
@@ -248,10 +249,5 @@ function exists($var, $type = 0) {
             <?php
         }
         ?>
-        <footer class="footer">
-            <div class="content has-text-centered">
-                <p>Nullminer is the best. Oh, by the way, you should <a href="https://www.youtube.com/channel/UCpwHu2wzwAWLGtKUu5fmkJA">check out my youtube channel</a>! Lets try to get to 1000 subs!</p>
-            </div>
-        </footer>
     </body>
 </html>
