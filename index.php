@@ -3,9 +3,13 @@ require 'resources/packages/nbt.class.php';
 $config = json_decode(file_get_contents("config.json"), 1);
 function exists($var, $type = 0) {
     if (isset($var) && $var != null) {
-        print($var);
+        if ($type == 2) {
+            print(round($var/1000));
+        } else {
+            print($var);
+        }
     } else {
-        if ($type == 1) {
+        if ($type == 1 || $type == 2) {
             print("N/A");
         } else {
             print("None");
@@ -111,22 +115,16 @@ function exists($var, $type = 0) {
 			            ?>
 			            <button class="accordion"><?php print($profile['cute_name']) ?></button>
                         <div class="panel">
-                            <b>Quick Stats</b>
+                            <div id="quick_stats">
+                                <b>Quick Stats</b>
+                                <p>Last Save: <?php print(date('Y/m/d H:i:s', $playerdata['last_save']/1000)) ?></p>
+                                <p>First Join: <?php print(date('Y/m/d H:i:s', $playerdata['first_join']/1000)) ?></p>
+                                <p>Fairy Souls: <?php exists($playerdata['fairy_souls_collected']) ?></p>
                                 <?php
-                                if (isset($playerdata['last_save'])) {
-                                    ?><p>Last Save: <?php print(date('Y/m/d H:i:s', $playerdata['last_save']/1000)) ?></p><?php
-                                } else {
-                                    ?><p>Last Save: None <u><i>But how is this even possible?</i></u></p><?php
-                                }
                                 if (isset($playerdata['coin_purse'])) {
                                     ?><p>Purse: <?php print(round($playerdata['coin_purse'], 1)) ?></p><?php
                                 } else {
                                     ?><p>Purse: None</p><?php
-                                }
-                                if (isset($playerdata['first_join'])) {
-                                    ?><p>First Join: <?php print(date('Y/m/d H:i:s', $playerdata['first_join']/1000)) ?></p><?php
-                                } else {
-                                    ?><p>First Join: None <u><i>But how is this even possible?</i></u></p><?php
                                 }
                                 if (isset($playerdata['stats']['highest_critical_damage'])) {
                                     ?><p>Highest Crit: <?php print(round($playerdata['stats']['highest_critical_damage'])) ?></p><?php
@@ -134,8 +132,9 @@ function exists($var, $type = 0) {
                                     ?><p>Highest Crit: None</p><?php
                                 }
                                 ?>
-                                <p>Fairy Souls: <?php exists($playerdata['fairy_souls_collected']) ?></p>
-                            <b>Auction Stats</b>
+                            </div>
+                            <div id="auction_stats">
+                                <b>Auction Stats</b>
                                 <p>Total Bids: <?php exists($playerdata['stats']['auctions_bids']) ?></p>
                                 <p>Auction Wins: <?php exists($playerdata['stats']['auctions_won']) ?></p>
                                 <p>Highest Bid: <?php exists($playerdata['stats']['auctions_highest_bid']) ?></p>
@@ -144,7 +143,9 @@ function exists($var, $type = 0) {
                                 <p>Total Earned: <?php exists($playerdata['stats']['auctions_gold_earned']) ?></p>
                                 <p>Auctions w/o Bids: <?php exists($playerdata['stats']['auctions_no_bids']) ?></p>
                                 <p>Items Sold: <?php print($playerdata['stats']['auctions_sold_common'] + $playerdata['stats']['auctions_sold_uncommon'] + $playerdata['stats']['auctions_sold_rare'] + $playerdata['stats']['auctions_sold_epic'] + $playerdata['stats']['auctions_sold_legendary'] + $playerdata['stats']['auctions_sold_mythic'] + $playerdata['stats']['auctions_sold_special']) ?></p>
-                            <b>Kills/Deaths Stats</b>
+                            </div>
+                            <div id="kd_stats">
+                                <b>Kills/Deaths Stats</b>
                                 <p>Kills: <?php exists($playerdata['stats']['kills']) ?></p>
                                 <p>Deaths: <?php exists($playerdata['stats']['deaths']) ?></p>
                                 <?php
@@ -154,8 +155,10 @@ function exists($var, $type = 0) {
                                     ?><p>K/D: None</p><?php
                                 }
                                 ?>
-                            <b>Slayer Stats</b>
-                                <table style="width:15%;">
+                            </div>
+                            <div id="slayer_stats">
+                                <b>Slayer Stats</b>
+                                <table style="width:20%">
                                     <tbody>
                                         <tr>
                                             <td>---</td>
@@ -191,13 +194,97 @@ function exists($var, $type = 0) {
                                         </tr>
                                     </tbody>
                                 </table>
-                            <b>Armour Data</b>
-                                <p>Coming Soon!</p>
-                                <?php
-                                // Create NBT file and load it
-                                ?>
-                            <p>&nbsp;</p>
                             </div>
+                            <div id="dungeon_stats">
+                                <b>Dungeon Stats -> Catacombs</b>
+                                <table style="width:45%">
+                                    <tbody>
+                                        <tr>
+                                            <td>---</td>
+                                            <td><u>Entrance</u></td>
+                                            <td><u>Floor 1</u></td>
+                                            <td><u>Floor 2</u></td>
+                                            <td><u>Floor 3</u></td>
+                                            <td><u>Floor 4</u></td>
+                                            <td><u>Floor 5</u></td>
+                                            <td><u>Floor 6</u></td>
+                                            <td><u>Floor 7</u></td>
+                                        </tr>
+                                        <tr>
+                                            <td><u>Times Played</u></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['0'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['1'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['2'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['3'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['4'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['5'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['6'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['times_played']['7'], 1) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><u>Floor Completions</u></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['0'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['1'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['2'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['3'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['4'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['5'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['6'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['7'], 1) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><u>Fastest Time</u></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['0'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['1'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['2'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['3'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['4'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['5'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['6'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['7'], 2) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><u>Best Score</u></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['0'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['1'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['2'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['3'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['4'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['5'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['6'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['7'], 1) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><u>Best Score</u></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['0'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['1'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['2'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['3'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['4'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['5'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['6'], 1) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['7'], 1) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><u>Fastest S Run</u></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['0'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['1'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['2'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['3'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['4'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['5'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['6'], 2) ?></td>
+                                            <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['7'], 2) ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="armour_stats">
+                                <b>Armour Stats</b>
+                                <p>Coming Soon!</p>
+                            </div>
+                            <p>&nbsp;</p>
+                        </div>
 			            <?php
                     }
                     ?>
