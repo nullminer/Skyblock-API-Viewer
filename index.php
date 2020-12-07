@@ -1,5 +1,6 @@
 <?php
 require 'resources/packages/nbt.class.php';
+$nbt = new nbt();
 $config = json_decode(file_get_contents("config.json"), 1);
 function exists($var, $type = 0) {
     if (isset($var) && $var != null) {
@@ -76,6 +77,29 @@ function exists($var, $type = 0) {
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
+            }
+            .tooltip {
+                position: relative;
+                display: inline-block;
+            }
+
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 300px;
+                bottom: 100%;
+                left: 50%;
+                margin-left: -60px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+                position: absolute;
+                z-index: 1;
+            }
+
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
             }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -233,7 +257,7 @@ function exists($var, $type = 0) {
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['tier_completions']['7'], 1) ?></td>
                                         </tr>
                                         <tr>
-                                            <td><u>Fastest Time</u></td>
+                                            <td><u>Fastest Time [s]</u></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['0'], 2) ?></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['1'], 2) ?></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time']['2'], 2) ?></td>
@@ -255,7 +279,7 @@ function exists($var, $type = 0) {
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['best_score']['7'], 1) ?></td>
                                         </tr>
                                         <tr>
-                                            <td><u>Best Score</u></td>
+                                            <td><u>Most Mobs Killed</u></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['0'], 1) ?></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['1'], 1) ?></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['2'], 1) ?></td>
@@ -281,7 +305,18 @@ function exists($var, $type = 0) {
                             </div>
                             <div id="armour_stats">
                                 <b>Armour Stats</b>
-                                <p>Coming Soon!</p>
+                                <br />
+                                <?php
+                                $nbtdata = gzdecode(base64_decode($playerdata['inv_armor']['data']));
+                                $nbtfile = "nbt/$uuid-" . time() . ".nbt";
+                                file_put_contents($nbtfile, $nbtdata);
+                                $nbt->loadFile($nbtfile);
+                                unlink($nbtfile);
+                                ?>
+                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][0][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][0][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][0][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
+                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][1][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][1][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][1][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
+                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][2][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][2][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][2][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
+                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][3][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][3][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][3][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
                             </div>
                             <p>&nbsp;</p>
                         </div>
