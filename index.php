@@ -1,6 +1,4 @@
 <?php
-require 'resources/packages/nbt.class.php';
-$nbt = new nbt();
 $config = json_decode(file_get_contents("config.json"), 1);
 function exists($var, $type = 0) {
     if (isset($var) && $var != null) {
@@ -302,21 +300,6 @@ function exists($var, $type = 0) {
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <div id="armour_stats">
-                                <b>Armour Stats</b>
-                                <br />
-                                <?php
-                                $nbtdata = gzdecode(base64_decode($playerdata['inv_armor']['data']));
-                                $nbtfile = "nbt/$uuid-" . time() . ".nbt";
-                                file_put_contents($nbtfile, $nbtdata);
-                                $nbt->loadFile($nbtfile);
-                                unlink($nbtfile);
-                                ?>
-                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][0][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][0][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][0][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
-                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][1][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][1][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][1][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
-                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][2][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][2][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][2][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
-                                <div class="tooltip"><?php print($nbt->root[0]['value'][0]['value']['value'][3][2]['value'][2]['value'][2]['value']) ?><span class="tooltiptext"><p><?php print($nbt->root[0]['value'][0]['value']['value'][3][2]['value'][2]['value'][2]['value']) ?></p><?php foreach ($nbt->root[0]['value'][0]['value']['value'][3][2]['value'][2]['value'][0]['value']['value'] as $line) { print("<p>" . $line . "</p>"); } ?></span></div>
                             </div>
                             <p>&nbsp;</p>
                         </div>
