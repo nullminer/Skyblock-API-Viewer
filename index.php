@@ -76,29 +76,6 @@ function exists($var, $type = 0) {
                 background-repeat: no-repeat;
                 background-size: cover;
             }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-            }
-
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 300px;
-                bottom: 100%;
-                left: 50%;
-                margin-left: -60px;
-                background-color: black;
-                color: #fff;
-                text-align: center;
-                padding: 5px 0;
-                border-radius: 6px;
-                position: absolute;
-                z-index: 1;
-            }
-
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-            }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
