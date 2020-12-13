@@ -265,7 +265,7 @@ function exists($var, $type = 0) {
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['mobs_killed']['7'], 1) ?></td>
                                         </tr>
                                         <tr>
-                                            <td><u>Fastest S Run</u></td>
+                                            <td><u>Fastest S Run [s]</u></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['0'], 2) ?></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['1'], 2) ?></td>
                                             <td><?php exists($playerdata['dungeons']['dungeon_types']['catacombs']['fastest_time_s']['2'], 2) ?></td>
@@ -277,6 +277,12 @@ function exists($var, $type = 0) {
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div id="jacob_stats">
+                                <b>Jacob Stats</b>
+                                <p>Bronze Medals: <?php exists($playerdata['jacob2']['medals_inv']['bronze']) ?></p>
+                                <p>Silver Medals: <?php exists($playerdata['jacob2']['medals_inv']['silver']) ?></p>
+                                <p>Gold Medals: <?php exists($playerdata['jacob2']['medals_inv']['gold']) ?></p>
                             </div>
                             <p>&nbsp;</p>
                         </div>
