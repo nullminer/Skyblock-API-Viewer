@@ -22,7 +22,7 @@ function exists($var, $type = 0) {
         <?php
         if (isset($_GET['player']) && $_GET['player'] != null) {
             ?>
-            <title><?php print($_GET['player']) ?>'s Stats</title>
+            <title><?php print($_GET['player']) ?>'s stats</title>
             <link rel="icon" type="image/png" href="http://cravatar.eu/avatar/<?php print($_GET['player']) ?>.png">
             <?php
         } else {
@@ -75,6 +75,28 @@ function exists($var, $type = 0) {
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;
+            }
+
+            .tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black;
+            }
+
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 335px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+                position: absolute;
+                z-index: 1;
+            }
+
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
             }
         </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -277,6 +299,37 @@ function exists($var, $type = 0) {
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div id="pet_stats">
+                                <b>Pet Stats</b>
+                                <br />
+                                <?php
+                                $counter = 0;
+                                foreach ($playerdata['pets'] as $pet) {
+                                    $counter += 1;
+                                    if ($counter % 8 == 0) {
+                                        ?><br /><?php
+                                    }
+                                    ?>
+                                    <div class="tooltip">
+                                        <?php
+                                        if ($pet['active'] == true) {
+                                            print("<b><i>" . $pet['type'] . "</i></b>");
+                                        } else {
+                                            print("<i>" . $pet['type'] . "</i>");
+                                        }
+                                        ?>
+                                        <span class="tooltiptext">
+                                            <p>EXP: <?php exists(round($pet['exp'])) ?></p>
+                                            <p>Item: <?php exists($pet['heldItem']) ?></p>
+                                            <p>Candy: <?php exists($pet['candyUsed']) ?></p>
+                                            <p>Skin: <?php exists($pet['skin']) ?></p>
+                                            <p>Tier: <?php exists($pet['tier']) ?></p>
+                                        </span>
+                                    </div>
+                                    <?php
+                                }
+                                ?>
                             </div>
                             <div id="jacob_stats">
                                 <b>Jacob Stats</b>
