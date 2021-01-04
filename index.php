@@ -36,13 +36,13 @@ function exists($var, $type = 0) {
         ?>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-        <link rel="stylesheet" href="resources/styles/styles.css">
+        <link rel="stylesheet" href="resources/styles.css">
     </head>
     <body>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="index.php">
-                    <img src="resources/images/logo.png" width="112" height="28">
+                    <img src="resources/logo.png" width="112" height="28">
                 </a>
                 <a class="navbar-item" href="https://hypixel.net/threads/skyblock-api-viewer-version-0-6.3602932/" target="_blank">Forum Thread</a>
                 <a class="navbar-item" href="https://github.com/nullminer/Skyblock-API-Viewer" target="_blank">Github</a>
@@ -305,7 +305,7 @@ function exists($var, $type = 0) {
             ?>
             <div style="text-align:center; padding-top:12.5%;">
 			    <form action="index.php" method="get">
-                    <img src="resources/images/logo.png">
+                    <img src="resources/logo.png">
 			        <p>&nbsp;</p>
 			        <input class="input is-large has-text-centered" style="width:30%;" type="text" id="player" name="player" placeholder="Enter Player IGN" autofocus>
 			        <p>&nbsp;</p>
