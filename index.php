@@ -267,8 +267,8 @@ function exists($var, $type = 0) {
                                         }
                                         $petexpladder = json_decode(file_get_contents("resources/petexpladder.json"), 1)['XPLadders'][$pet['tier']];
                                         $petlevel = 0;
-                                        foreach ($petexpladder as $levelexp) {
-                                            if ($pet['exp'] >= $levelexp) {
+                                        foreach ($petexpladder as $totalexp) {
+                                            if ($pet['exp'] >= $totalexp) {
                                                 $petlevel++;
                                             } else {
                                                 break;
