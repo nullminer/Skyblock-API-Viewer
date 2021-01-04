@@ -249,22 +249,36 @@ function exists($var, $type = 0) {
                                         } else {
                                             print("<i>" . $pet['type'] . "</i>");
                                         }
+                                        if ($pet['heldItem'] == "PET_ITEM_TIER_BOOST") {
+                                            switch ($pet['tier']) {
+                                                case "COMMON":
+                                                    $pet['tier'] = "UNCOMMON";
+                                                    break;
+                                                case "UNCOMMON":
+                                                    $pet['tier'] = "RARE";
+                                                    break;
+                                                case "RARE":
+                                                    $pet['tier'] = "EPIC";
+                                                    break;
+                                                case "EPIC":
+                                                    $pet['tier'] = "LEGENDARY";
+                                                    break;
+                                            }
+                                        }
                                         $petexpladder = json_decode(file_get_contents("resources/petexpladder.json"), 1)['XPLadders'][$pet['tier']];
-                                        $petexp = $pet['exp'];
-                                        $petlevel = 1;
-                                        for ($i = 0, $i < count($petexpladder), $i++) {
-                                            if ($i == count($petexpladder) - 1) {
-                                                $petexp -= $petexpladder[$i];
+                                        $petlevel = 0;
+                                        foreach ($petexpladder as $levelexp) {
+                                            if ($pet['exp'] >= $levelexp) {
                                                 $petlevel++;
-                                            } else if ($petexp >= $petexpladder[$i] && $petexp < $petexpladder[$i + 1]) {
+                                            } else {
                                                 break;
                                             }
                                         }
                                         ?>
                                         <span class="tooltiptext">
-                                            <p>Level: <?php exists(round($petlevel)) ?></p>
-                                            <p>Item: <?php exists($pet['heldItem']) ?></p>
-                                            <p>Candy: <?php exists($pet['candyUsed']) ?>/10</p>
+                                            <p>Level: <?php exists($petlevel) ?></p>
+                                            <p>Item: <?php exists(str_replace("PET_ITEM_", "", $pet['heldItem'])) ?></p>
+                                            <p>Candy: <?php exists($pet['candyUsed']) ?></p>
                                             <p>Skin: <?php exists($pet['skin']) ?></p>
                                             <p>Tier: <?php exists($pet['tier']) ?></p>
                                         </span>
