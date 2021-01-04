@@ -1,5 +1,8 @@
 <?php
-$config = json_decode(file_get_contents("config.json"), 1);
+
+// CONFIG
+$apikey = "";
+
 function exists($var, $type = 0) {
     if (isset($var) && $var != null) {
         if ($type == 2) {
@@ -31,76 +34,9 @@ function exists($var, $type = 0) {
             <?php
         }
         ?>
-        <style>
-            .accordion {
-                background-color: #eee;
-                color: #444;
-                cursor: pointer;
-                padding: 18px;
-                width: 100%;
-                border: none;
-                text-align: left;
-                outline: none;
-                font-size: 15px;
-                transition: 0.4s;
-            }
-
-            .active, .accordion:hover {
-                background-color: #ccc;
-            }
-
-            .panel {
-                padding: 0 18px;
-                background-color: white;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.2s ease-out;
-            }
-            
-            .accordion:after {
-                content: '\02795';
-                font-size: 13px;
-                color: #777;
-                float: right;
-                margin-left: 5px;
-            }
-
-            .active:after {
-                content: "\2796";
-            }
-            
-            html, body {
-                background-image: url("resources/images/background.png");
-                height: 100%;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                border-bottom: 1px dotted black;
-            }
-
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 335px;
-                background-color: black;
-                color: #fff;
-                text-align: center;
-                padding: 5px 0;
-                border-radius: 6px;
-                position: absolute;
-                z-index: 1;
-            }
-
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-            }
-        </style>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <link rel="stylesheet" href="resources/styles/styles.css">
     </head>
     <body>
         <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -110,7 +46,6 @@ function exists($var, $type = 0) {
                 </a>
                 <a class="navbar-item" href="https://hypixel.net/threads/skyblock-api-viewer-version-0-6.3602932/" target="_blank">Forum Thread</a>
                 <a class="navbar-item" href="https://github.com/nullminer/Skyblock-API-Viewer" target="_blank">Github</a>
-                <a class="navbar-item" href="https://www.youtube.com/channel/UCpwHu2wzwAWLGtKUu5fmkJA" target="_blank">My Youtube</a>
             </div>
         </nav>
         <?php
@@ -118,13 +53,9 @@ function exists($var, $type = 0) {
             $mojangapi = file_get_contents("https://api.mojang.com/users/profiles/minecraft/" . $_GET['player']);
             if ($mojangapi != null) {
                 $uuid = json_decode($mojangapi, true)['id'];
-                $profileapi = file_get_contents("https://api.hypixel.net/skyblock/profiles?key=" . $config['apikey'] . "&uuid=$uuid");
+                $profileapi = file_get_contents("https://api.hypixel.net/skyblock/profiles?key=$apikey&uuid=$uuid");
                 $profiles = json_decode($profileapi, true)['profiles'];
                 if ($profiles != null) {
-                    if (!file_exists("history/$uuid")) {
-                        mkdir("history/$uuid");
-                    }
-                    file_put_contents("history/$uuid/" . time() . ".txt", $profileapi);
                     ?>
                     <div style="width:25%; float:left; text-align:center; padding-top:12.5%;">
                         <img src="https://crafatar.com/renders/body/<?php print($uuid) ?>?scale=10" alt="<?php print($_GET['player']) ?>'s skin" />
@@ -362,17 +293,11 @@ function exists($var, $type = 0) {
                     <?php
                 } else {
                     ?>
-                    <audio autoplay="true" style="display:none;">
-                        <source src="resources/music/error.mp3" type="audio/mp3">
-                    </audio>
                     <h2>The player has no profiles!</h2>
                     <?php
                 }
             } else {
                 ?>
-                <audio autoplay="true" style="display:none;">
-                    <source src="resources/music/error.mp3" type="audio/mp3">
-                </audio>
                 <h2>The player doesn't exist!</h2>
                 <?php
             }
