@@ -3,6 +3,10 @@
 // CONFIG
 $apikey = "";
 
+// EXP LADDERS
+$petexpladder = json_decode(file_get_contents("resources/petexpladder.json"), 1)['XPLadders'];
+$normalexpladder = json_decode(file_get_contents("resources/skillexpladder.json"), 1)['XPLadders'];
+
 function exists($var, $type = 0) {
     if (isset($var) && $var != null) {
         if ($type == 2) {
@@ -15,6 +19,26 @@ function exists($var, $type = 0) {
             print("N/A");
         } else {
             print("None");
+        }
+    }
+}
+function skilllevel($exp, $type = "NORMAL") {
+    $level = 0;
+    foreach ($normalexpladder[$type] as $totalexp) {
+        if ($exp >= $totalexp) {
+            $level++;
+        } else {
+            print($level);
+        }
+    }
+}
+function petlevel($pet) {
+    $level = 0;
+    foreach ($petexpladder[$pet['tier']] as $totalexp) {
+        if ($pet['exp'] >= $totalexp) {
+            $level++;
+        } else {
+            print($level);
         }
     }
 }
@@ -118,7 +142,7 @@ function exists($var, $type = 0) {
                                             <td><u>T2</u></td>
                                             <td><u>T3</u></td>
                                             <td><u>T4</u></td>
-                                            <td><u>XP</u></td>
+                                            <td><u>LVL</u></td>
                                         </tr>
                                         <tr>
                                             <td><u>Zombie</u></td>
@@ -126,7 +150,7 @@ function exists($var, $type = 0) {
                                             <td><?php exists($playerdata['slayer_bosses']['zombie']['boss_kills_tier_1'], 1) ?></td>
                                             <td><?php exists($playerdata['slayer_bosses']['zombie']['boss_kills_tier_2'], 1) ?></td>
                                             <td><?php exists($playerdata['slayer_bosses']['zombie']['boss_kills_tier_3'], 1) ?></td>
-                                            <td><?php exists($playerdata['slayer_bosses']['zombie']['xp'], 1) ?></td>
+                                            <td><?php exists($playerdata['slayer_bosses']['zombie']['xp'], "SLAYER") ?></td>
                                         </tr>
                                         <tr>
                                             <td><u>Spider</u></td>
@@ -265,18 +289,9 @@ function exists($var, $type = 0) {
                                                     break;
                                             }
                                         }
-                                        $petexpladder = json_decode(file_get_contents("resources/petexpladder.json"), 1)['XPLadders'][$pet['tier']];
-                                        $petlevel = 0;
-                                        foreach ($petexpladder as $totalexp) {
-                                            if ($pet['exp'] >= $totalexp) {
-                                                $petlevel++;
-                                            } else {
-                                                break;
-                                            }
-                                        }
                                         ?>
                                         <span class="tooltiptext">
-                                            <p>Level: <?php exists($petlevel) ?></p>
+                                            <p>Level: <?php petlevel($pet) ?></p>
                                             <p>Item: <?php exists(str_replace("PET_ITEM_", "", $pet['heldItem'])) ?></p>
                                             <p>Candy: <?php exists($pet['candyUsed']) ?></p>
                                             <p>Skin: <?php exists($pet['skin']) ?></p>
@@ -287,6 +302,28 @@ function exists($var, $type = 0) {
                                 }
                                 ?>
                             </div>
+                            <?php
+                            if (isset($playerdata['experience_skill_mining'])) {
+                                ?>
+                                <div id="skill_stats">
+                                <b>Skill Stats</b>
+                                <p>Mining Level <?php skilllevel($playerdata['experience_skill_mining']) ?></p>
+                                <p>Farming Level <?php skilllevel($playerdata['experience_skill_farming'], "SIXTY") ?></p>
+                                <p>Combat Level <?php skilllevel($playerdata['experience_skill_combat']) ?></p>
+                                <p>Foraging Level <?php skilllevel($playerdata['experience_skill_foraging']) ?></p>
+                                <p>Fishing Level <?php skilllevel($playerdata['experience_skill_fishing']) ?></p>
+                                <p>Alchemy Level <?php skilllevel($playerdata['experience_skill_alchemy']) ?></p>
+                                <p>Enchanting Level <?php skilllevel($playerdata['experience_skill_enchanting'], "SIXTY") ?></p>
+                                <p>Taming Level <?php skilllevel($playerdata['experience_skill_taming']) ?></p>
+                                <p>Catacombs Level <?php skilllevel($playerdata['dungeons']['dungeon_types']['catacombs']['experience'], "DUNGEONS") ?></p>
+                                <p>Runecrafting Level <?php skilllevel($playerdata['experience_skill_runecrafting']) ?></p>
+                                <p>Carpentry Level <?php skilllevel($playerdata['experience_skill_runecrafting']) ?></p>
+                                <p>Social Level <?php skilllevel($playerdata['experience_skill_social']) ?></p>
+                                <p><i>NOTE: Farming Level Might Be Inaccurate As I Did Not Take Jacob Upgrades Into Account</i></p>
+                            </div>
+                                <?php
+                            }
+                            ?>
                             <div id="jacob_stats">
                                 <b>Jacob Stats</b>
                                 <p>Bronze Medals: <?php exists($playerdata['jacob2']['medals_inv']['bronze']) ?></p>
